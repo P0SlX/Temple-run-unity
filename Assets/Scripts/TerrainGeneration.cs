@@ -24,6 +24,7 @@ public class TerrainGeneration : MonoBehaviour
     private Quaternion decorRotationRight = Quaternion.identity;
 
     private Quaternion collectibleRotation = Quaternion.Euler(-90, 0, 0);
+    private List<List<GameObject>> collectibles;
 
     // Start is called before the first frame update
     private void Start()
@@ -52,6 +53,8 @@ public class TerrainGeneration : MonoBehaviour
             Instantiate(decor, new Vector3(240, 0, 19.5f), decorRotationLeft),
             Instantiate(decor, new Vector3(180, 0, -19.5f), decorRotationRight),
         };
+        
+        collectibles = new List<List<GameObject>>();
     }
 
     // Update is called once per frame
@@ -76,6 +79,15 @@ public class TerrainGeneration : MonoBehaviour
             triggerCoordDecor += 60;
             lastDecorCoord += 60;
         }
+        
+        // Remove collectibles that are behind the player
+        if (collectibles.Count <= 0) return;
+        if (!(playerX >= collectibles[0][0].transform.position.x + 50)) return;
+        foreach (var collectible in collectibles[0])
+        {
+            Destroy(collectible);
+        }
+        collectibles.RemoveAt(0);
     }
 
     private void AddTerrain()
@@ -122,6 +134,7 @@ public class TerrainGeneration : MonoBehaviour
 
         for (var i = 0; i < nbRows; i++)
         {
+            var tmp = new List<GameObject>();
             for (var j = -2; j <= 2; j += 2)
             {
                 var random = Random.Range(0, 1000);
@@ -134,11 +147,11 @@ public class TerrainGeneration : MonoBehaviour
                     < 997 => diamond,
                     _ => diamondBlack
                 };
-                
-                // Add the collectible to the terrain instance to remove it when the terrain is destroyed
-                Instantiate(go, pos, collectibleRotation).transform.parent = terrainInstance.transform;
-            }
 
+                // Add the collectible to the terrain instance to remove it when the terrain is destroyed
+                tmp.Add(Instantiate(go, pos, collectibleRotation));
+            }
+            collectibles.Add(tmp);
             offset += increment;
         }
     }

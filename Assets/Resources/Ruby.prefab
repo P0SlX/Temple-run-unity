@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6113241885221211971}
   m_Layer: 0
   m_Name: Ruby
-  m_TagString: Untagged
+  m_TagString: Ruby
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,5 +120,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.9999996, y: 2.0000002, z: 30}
+  m_Size: {x: 4, y: 2.0000002, z: 30}
   m_Center: {x: 0, y: 0.00000023841864, z: 13}

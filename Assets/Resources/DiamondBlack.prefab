@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiamondBlack
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013656696560, guid: cd34118c604e29141afea74caecd70f2, type: 3}
+      propertyPath: m_TagString
+      value: DiamondBlack
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011756025136, guid: cd34118c604e29141afea74caecd70f2, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -121,5 +125,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.4059365, y: 2.4380145, z: 30}
+  m_Size: {x: 4, y: 2.4380145, z: 30}
   m_Center: {x: 0, y: 3.245745e-14, z: 13}

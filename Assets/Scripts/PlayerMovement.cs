@@ -71,4 +71,26 @@ public class PlayerMovement : MonoBehaviour
         if (!other.gameObject.CompareTag("Ground")) return;
         _isGrounded = true;
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "Coin":
+                GameManager.Score += 50;
+                break;
+            case "Emerald":
+                GameManager.Score += 100;
+                break;
+            case "Ruby":
+                GameManager.Score += 200;
+                break;
+            case "Diamond":
+                GameManager.Score += 500;
+                break;
+            case "DiamondBlack":
+                GameManager.Score -= 500;
+                break;
+        }
+    }
 }

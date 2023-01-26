@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2479343545476585967}
   m_Layer: 0
   m_Name: Coin
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   isAnimated: 1
   isRotating: 1
   isFloating: 1
-  isScaling: 1
+  isScaling: 0
   rotationAngle: {x: 0, y: 0, z: 10}
   rotationSpeed: 10
   floatSpeed: 0.01
@@ -120,5 +120,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 1.5, z: 30}
-  m_Center: {x: 0, y: 4.572193e-14, z: 13}
+  m_Size: {x: 4, y: 1.5, z: 30}
+  m_Center: {x: 0, y: 0, z: 12.999998}
