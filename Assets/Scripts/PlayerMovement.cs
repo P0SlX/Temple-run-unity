@@ -1,26 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private bool goesLeft, goesRight, jumps, slides;
-    public float speed = 7.0f;
-    private Rigidbody myRigidbody;
     private static readonly int Jump = Animator.StringToHash("jump");
     private static readonly int Roll = Animator.StringToHash("roll");
     private static readonly int Dead = Animator.StringToHash("dead");
-    private bool isGrounded = true;
+    public float speed = 7.0f;
     public Vector3[] lanes;
     public int currentLane = 1;
     private Vector3 forwardVector;
+    private bool goesLeft, goesRight, jumps, slides;
+    private bool isGrounded = true;
 
 
     private Animator myAnimator;
+    private Rigidbody myRigidbody;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         myAnimator = GetComponent<Animator>();
         myRigidbody = GetComponent<Rigidbody>();
@@ -28,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         goesLeft = Input.GetKeyDown(KeyCode.A);
         goesRight = Input.GetKeyDown(KeyCode.D);
@@ -37,12 +34,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumps && isGrounded)
         {
-            myRigidbody.AddRelativeForce(Vector3.up * 5, ForceMode.Impulse);
+            myRigidbody.AddRelativeForce(Vector3.up * 6, ForceMode.Impulse);
             myAnimator.SetTrigger(Jump);
+            isGrounded = false;
         }
         else if (slides)
         {
-            myRigidbody.AddRelativeForce(-(Vector3.up * 5), ForceMode.Impulse);
+            myRigidbody.AddRelativeForce(Vector3.up * -6, ForceMode.Impulse);
             myAnimator.SetTrigger(Roll);
         }
         else if (Input.GetKeyDown(KeyCode.X))
@@ -51,22 +49,16 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (goesLeft)
         {
-            if (currentLane < lanes.Length - 1)
-            {
-                currentLane++;
-            }
+            if (currentLane < lanes.Length - 1) currentLane++;
         }
         else if (goesRight)
         {
-            if (currentLane > 0)
-            {
-                currentLane--;
-            }
+            if (currentLane > 0) currentLane--;
         }
 
         // Avancer le personnage
         transform.Translate(forwardVector * Time.deltaTime);
-        
+
         // Déplacer le personnage vers les cotés si on change de lane
         var persoPos = transform.position;
         lanes[currentLane] = new Vector3(persoPos.x, persoPos.y, lanes[currentLane].z);
@@ -82,11 +74,5 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Ground")) return;
         isGrounded = true;
-    }
-
-    private void OnCollisionExit(Collision other)
-    {
-        if (!other.gameObject.CompareTag("Ground")) return;
-        isGrounded = false;
     }
 }

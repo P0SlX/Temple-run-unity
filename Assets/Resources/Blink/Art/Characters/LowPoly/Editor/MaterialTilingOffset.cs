@@ -5,32 +5,21 @@ namespace BLINK.Tools
 {
     public class MaterialTilingOffset : EditorWindow
     {
-        
-        private ScriptableObject scriptableObj;
-        private SerializedObject serialObj;
-        
         public GameObject[] gameObjectList;
-        private float xOffset = 0.0313f;
-        private float yOffset;
 
         private Material cachedMaterial;
         private Material newMaterial;
-        
-        private int sliderValue;
-        
-        
-        [MenuItem("BLINK/Material Tiling Offset")]
-        private static void OpenWindow()
-        {
-            var window = (MaterialTilingOffset) GetWindow(typeof(MaterialTilingOffset), false,"Blink Material Tiling Offset");
-            window.minSize = new Vector2(300, 400);
-            GUI.contentColor = Color.white;
-            window.Show();
-        }
 
-        private void OnGUI()
+        private ScriptableObject scriptableObj;
+        private SerializedObject serialObj;
+
+        private int sliderValue;
+        private float xOffset = 0.0313f;
+        private float yOffset;
+
+        private void Update()
         {
-            DrawMainWindow();
+            Repaint();
         }
 
         private void OnEnable()
@@ -39,9 +28,20 @@ namespace BLINK.Tools
             serialObj = new SerializedObject(scriptableObj);
         }
 
-        private void Update()
+        private void OnGUI()
         {
-            Repaint();
+            DrawMainWindow();
+        }
+
+
+        [MenuItem("BLINK/Material Tiling Offset")]
+        private static void OpenWindow()
+        {
+            var window =
+                (MaterialTilingOffset)GetWindow(typeof(MaterialTilingOffset), false, "Blink Material Tiling Offset");
+            window.minSize = new Vector2(300, 400);
+            GUI.contentColor = Color.white;
+            window.Show();
         }
 
         private void DrawMainWindow()
@@ -50,23 +50,18 @@ namespace BLINK.Tools
             EditorGUILayout.PropertyField(serialProp, true);
             GUILayout.Space(10);
             if (GUILayout.Button("INITIALIZE", GUILayout.MinWidth(150), GUILayout.MinHeight(30),
-                GUILayout.ExpandWidth(true)))
-            {
+                    GUILayout.ExpandWidth(true)))
                 Init();
-            }
             GUILayout.Space(10);
-            
+
             EditorGUI.BeginChangeCheck();
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Color", GUILayout.MaxWidth(50));
             sliderValue = EditorGUILayout.IntSlider(sliderValue, 0, 64);
             GUILayout.EndHorizontal();
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                UpdateMaterial();
-            }
-            
+            if (EditorGUI.EndChangeCheck()) UpdateMaterial();
+
             GUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Current X Offset");
             EditorGUILayout.FloatField(GetXOffset());
@@ -75,26 +70,22 @@ namespace BLINK.Tools
             EditorGUILayout.LabelField("Current Y Offset");
             EditorGUILayout.FloatField(yOffset);
             GUILayout.EndHorizontal();
-            
+
             GUILayout.Space(10);
             if (GUILayout.Button("CREATE MATERIAL", GUILayout.MinWidth(150), GUILayout.MinHeight(30),
-                GUILayout.ExpandWidth(true)))
-            {
+                    GUILayout.ExpandWidth(true)))
                 CreateMaterial();
-            }
             GUILayout.Space(10);
             if (GUILayout.Button("SAVE SELECTION", GUILayout.MinWidth(150), GUILayout.MinHeight(30),
-                GUILayout.ExpandWidth(true)))
-            {
+                    GUILayout.ExpandWidth(true)))
                 SaveSelection();
-            }
-            
+
             serialObj.ApplyModifiedProperties();
         }
 
         private void Init()
         {
-            Renderer renderer = gameObjectList[0].GetComponent<Renderer>();
+            var renderer = gameObjectList[0].GetComponent<Renderer>();
             if (renderer != null)
             {
                 cachedMaterial = renderer.sharedMaterial;
@@ -102,22 +93,19 @@ namespace BLINK.Tools
 
                 foreach (var weapon in gameObjectList)
                 {
-                    Renderer r = weapon.GetComponent<Renderer>();
+                    var r = weapon.GetComponent<Renderer>();
                     if (r == null) continue;
                     r.sharedMaterial = newMaterial;
                 }
-                        
+
                 UpdateMaterial();
             }
         }
 
         private float GetXOffset()
         {
-            int offsetValue = sliderValue;
-            if (sliderValue > 32)
-            {
-                offsetValue -= 32;
-            }
+            var offsetValue = sliderValue;
+            if (sliderValue > 32) offsetValue -= 32;
 
             return xOffset * offsetValue;
         }
@@ -127,7 +115,7 @@ namespace BLINK.Tools
             if (gameObjectList.Length == 0) return;
             if (newMaterial == null) return;
 
-            int offsetValue = sliderValue;
+            var offsetValue = sliderValue;
             if (sliderValue > 32)
             {
                 yOffset = 0.5f;
@@ -137,21 +125,22 @@ namespace BLINK.Tools
             {
                 yOffset = 0;
             }
-            
+
             newMaterial.mainTextureOffset = new Vector2(xOffset * offsetValue, yOffset);
         }
 
         private void CreateMaterial()
         {
-            string path = "Assets/Blink/Art/Weapons/LowPoly/MegaWeaponPack1/Materials_MWP1/";
-            AssetDatabase.CreateAsset(newMaterial, path + AssetDatabase.GenerateUniqueAssetPath("New MWP1 Material") + ".mat");
+            var path = "Assets/Blink/Art/Weapons/LowPoly/MegaWeaponPack1/Materials_MWP1/";
+            AssetDatabase.CreateAsset(newMaterial,
+                path + AssetDatabase.GenerateUniqueAssetPath("New MWP1 Material") + ".mat");
         }
 
         private void SaveSelection()
         {
             foreach (var go in Selection.gameObjects)
             {
-                if (!go.TryGetComponent(out global::BLINK.Tools.MaterialTilingOffset mto)) continue;
+                if (!go.TryGetComponent(out MaterialTilingOffset mto)) continue;
                 mto.xOffset = GetXOffset();
                 mto.yOffset = yOffset;
             }
