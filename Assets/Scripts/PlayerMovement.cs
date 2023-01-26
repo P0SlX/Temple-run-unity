@@ -8,61 +8,57 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 7.0f;
     public Vector3[] lanes;
     public int currentLane = 1;
-    private Vector3 forwardVector;
-    private bool goesLeft, goesRight, jumps, slides;
-    private bool isGrounded = true;
+    private bool _goesLeft, _goesRight, _jumps, _slides;
+    private bool _isGrounded = true;
 
 
-    private Animator myAnimator;
-    private Rigidbody myRigidbody;
+    private Animator _myAnimator;
+    private Rigidbody _myRigidbody;
 
     // Start is called before the first frame update
     private void Start()
     {
-        myAnimator = GetComponent<Animator>();
-        myRigidbody = GetComponent<Rigidbody>();
-        forwardVector = Vector3.forward * speed;
+        _myAnimator = GetComponent<Animator>();
+        _myRigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        goesLeft = Input.GetKeyDown(KeyCode.A);
-        goesRight = Input.GetKeyDown(KeyCode.D);
-        jumps = Input.GetKeyDown(KeyCode.W);
-        slides = Input.GetKeyDown(KeyCode.S);
+        _goesLeft = Input.GetKeyDown(KeyCode.A);
+        _goesRight = Input.GetKeyDown(KeyCode.D);
+        _jumps = Input.GetKeyDown(KeyCode.W);
+        _slides = Input.GetKeyDown(KeyCode.S);
 
-        if (jumps && isGrounded)
+        if (_jumps && _isGrounded)
         {
-            myRigidbody.AddRelativeForce(Vector3.up * 6, ForceMode.Impulse);
-            myAnimator.SetTrigger(Jump);
-            isGrounded = false;
+            _myRigidbody.AddRelativeForce(Vector3.up * 6, ForceMode.Impulse);
+            _myAnimator.SetTrigger(Jump);
+            _isGrounded = false;
         }
-        else if (slides)
+        else if (_slides)
         {
-            myRigidbody.AddRelativeForce(Vector3.up * -6, ForceMode.Impulse);
-            myAnimator.SetTrigger(Roll);
+            _myRigidbody.AddRelativeForce(Vector3.up * -6, ForceMode.Impulse);
+            _myAnimator.SetTrigger(Roll);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            myAnimator.SetTrigger(Dead);
+            _myAnimator.SetTrigger(Dead);
         }
-        else if (goesLeft)
+        else if (_goesLeft)
         {
             if (currentLane < lanes.Length - 1) currentLane++;
         }
-        else if (goesRight)
+        else if (_goesRight)
         {
             if (currentLane > 0) currentLane--;
         }
-
-        // Avancer le personnage
-        transform.Translate(forwardVector * Time.deltaTime);
-
-        // Déplacer le personnage vers les cotés si on change de lane
+        
+        // Déplacer le personnage vers les cotés si on change de lane et vers l'avant constamment
         var persoPos = transform.position;
-        lanes[currentLane] = new Vector3(persoPos.x, persoPos.y, lanes[currentLane].z);
-        transform.position = new Vector3(persoPos.x, persoPos.y,
+        var nextPersoPosX = persoPos.x + speed * Time.deltaTime;
+        lanes[currentLane] = new Vector3(nextPersoPosX, persoPos.y, lanes[currentLane].z);
+        transform.position = new Vector3(nextPersoPosX, persoPos.y,
             Vector3.Lerp(
                 persoPos,
                 lanes[currentLane],
@@ -73,6 +69,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         if (!other.gameObject.CompareTag("Ground")) return;
-        isGrounded = true;
+        _isGrounded = true;
     }
 }
