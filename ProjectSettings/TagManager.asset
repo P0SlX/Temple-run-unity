@@ -10,6 +10,8 @@ TagManager:
   - DiamondBlack
   - Emerald
   - Ruby
+  - Obstacle
+  - FinishLine
   layers:
   - Default
   - TransparentFX

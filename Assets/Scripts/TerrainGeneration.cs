@@ -10,7 +10,7 @@ public class TerrainGeneration : MonoBehaviour
     public GameObject diamondBlack;
     public GameObject emerald;
     public GameObject ruby;
-
+    public GameObject finishLine;
 
     private GameObject terrain;
     private List<GameObject> terrains;
@@ -26,6 +26,8 @@ public class TerrainGeneration : MonoBehaviour
 
     private Quaternion collectibleRotation = Quaternion.Euler(-90, 0, 0);
     private List<List<GameObject>> collectibles;
+    
+    private int _finishCoord;
 
     // Start is called before the first frame update
     private void Start()
@@ -49,6 +51,10 @@ public class TerrainGeneration : MonoBehaviour
             decors.Add(Instantiate(decor, new Vector3(lastDecorCoord + 60, 0, -19.5f), decorRotationRight));
             lastDecorCoord += 60;
         }
+
+        if (Difficulty.IsInfinit) return;
+        _finishCoord = Difficulty.difficulty * 1000 + 5;
+        Instantiate(finishLine, new Vector3(_finishCoord, 0.27f, 3.5f), Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -152,7 +158,6 @@ public class TerrainGeneration : MonoBehaviour
 
     private void RemoveGoBehindPlayer(List<GameObject> gameObjects)
     {
-        // Remove the first plateau if the player position (int) % 100 == 0
         var firstGo = gameObjects[0];
         gameObjects.RemoveAt(0);
         Destroy(firstGo);

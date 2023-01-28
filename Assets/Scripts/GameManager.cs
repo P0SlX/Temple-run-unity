@@ -5,7 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static int Score = 0;
-    public static int Difficulty = 1;
+    public static bool IsGameOver = false;
+    public static bool IsFinished = false;
+    public static bool DodgeRemaining = true;
 
     // Start is called before the first frame update
     void Start()

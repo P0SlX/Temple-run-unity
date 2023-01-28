@@ -1,40 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ObstacleGeneration : MonoBehaviour
 {
     public GameObject player;
-
-    [FormerlySerializedAs("Obstacle du haut")]
     public GameObject obstacleOver;
-
-    [FormerlySerializedAs("Obstacle du bas")]
     public GameObject obstacleUnder;
-
-    [FormerlySerializedAs("Obstacle une voie")]
-    public GameObject obstacleOneWay;
-
-    [FormerlySerializedAs("Obstacle deux voie")]
-    public GameObject obstacleTwoWay;
-
-    [FormerlySerializedAs("Séparation des obstacles")]
+    public GameObject bushObstacle;
+    public GameObject stumpObstacle;
     public int triggerCoordObstacle = 20;
 
-    private List<GameObject> _obstacles;
+    private List<List<GameObject>> _obstacles;
     private int _lastObstacleCoord = 20;
+    private int[] _zValues = { -2, 0, 2 };
 
     // Start is called before the first frame update
     void Start()
     {
-        _obstacles = new List<GameObject>();
-        
+        _obstacles = new List<List<GameObject>>();
+
         // Ajoute 10 obstacles au début
         for (var i = 0; i < 10; i++)
         {
-            AddObstacle(GetRandomObstacle());
+            AddObstacle();
         }
     }
 
@@ -46,44 +35,91 @@ public class ObstacleGeneration : MonoBehaviour
         // Ajoute un obstacle
         if (playerX >= triggerCoordObstacle)
         {
-            AddObstacle(GetRandomObstacle());
+            AddObstacle();
             triggerCoordObstacle += 20;
         }
 
         // Supprime un obstacle si le joueur l'a passé depuis 20 unités
-        if (playerX >= _obstacles.First().transform.position.x + 20)
+        if (playerX >= _obstacles.First().First().transform.position.x + 20)
         {
             RemoveObstacle();
         }
     }
 
-    private void AddObstacle(GameObject go)
+    private void AddObstacle()
     {
-        // Récup la position de l'obstacle et l'instancie à la bonne position
-        var goPosition = go.transform.position;
-        var newObstacle = Instantiate(go, new Vector3(_lastObstacleCoord + 20, goPosition.y, goPosition.z), go.transform.rotation);
-        
-        // Ajoute l'obstacle à la liste pour le détruire quand il sera passé
-        _obstacles.Add(newObstacle);
+        var type = Random.Range(0, 2);
+        var list = new List<GameObject>();
+
+        // Obstacle simple
+        if (type == 0)
+        {
+            var obstacle = GetRandomObstacleOneWay();
+            var obstaclePosition = obstacle.transform.position;
+            var zCoord = _zValues[Random.Range(0, 3)];
+            var newObstacle = Instantiate(obstacle, new Vector3(_lastObstacleCoord + 20, obstaclePosition.y, zCoord),
+                obstacle.transform.rotation);
+            list.Add(newObstacle);
+
+            // Génére un deuxième obstacle ?
+            if (Random.Range(1, 3) == 1)
+            {
+                var go = GetRandomObstacleOneWay();
+                obstaclePosition = obstacle.transform.position;
+                int zCoord2;
+                do
+                {
+                    zCoord2 = _zValues[Random.Range(0, 3)];
+                } while (zCoord == zCoord2);
+
+                var newObstacle2 = Instantiate(go,
+                    new Vector3(_lastObstacleCoord + 20, obstaclePosition.y, zCoord2),
+                    obstacle.transform.rotation);
+                list.Add(newObstacle2);
+            }
+        }
+        // Obstacle à 3 voies
+        else
+        {
+            var obstacle = GetRandomObstacleThreeWay();
+            var obstaclePosition = obstacle.transform.position;
+            var newObstacle = Instantiate(obstacle,
+                new Vector3(_lastObstacleCoord + 20, obstaclePosition.y, obstaclePosition.z),
+                obstacle.transform.rotation);
+            list.Add(newObstacle);
+        }
+
         _lastObstacleCoord += 20;
+        _obstacles.Add(list);
     }
 
     private void RemoveObstacle()
     {
         var obstacle = _obstacles.First();
-        _obstacles.Remove(obstacle);
-        Destroy(obstacle);
+        _obstacles.RemoveAt(0);
+        foreach (var go in obstacle)
+        {
+            Destroy(go);
+        }
     }
 
-    private GameObject GetRandomObstacle()
+    private GameObject GetRandomObstacleThreeWay()
     {
-        return Random.Range(0, 4) switch
+        return Random.Range(0, 2) switch
         {
             0 => obstacleOver,
             1 => obstacleUnder,
-            // 2 => obstacleOneWay,
-            // 3 => obstacleTwoWay,
             _ => obstacleOver
         };
     }
-}    
+
+    private GameObject GetRandomObstacleOneWay()
+    {
+        return Random.Range(0, 2) switch
+        {
+            0 => stumpObstacle,
+            1 => bushObstacle,
+            _ => bushObstacle
+        };
+    }
+}

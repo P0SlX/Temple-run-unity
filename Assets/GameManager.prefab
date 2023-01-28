@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5526553584182985124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5526553584182985125}
+  - component: {fileID: 5526553584182985122}
+  - component: {fileID: 5526553584182985123}
+  - component: {fileID: 5526553584182985120}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5526553584182985125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5526553584182985124}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5526553584182985122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5526553584182985124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dec94f3e335223e16a4df1f2b4083b6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  coin: {fileID: 2593767964718327648, guid: 2434575cad53fe37bbcfa50da731b822, type: 3}
+  diamond: {fileID: 6017248514817581945, guid: ffdd208220e229ae98adf1d403f206ac, type: 3}
+  diamondBlack: {fileID: 930337185009880107, guid: a1e2a401a94442de2a7c64b255dab3b5, type: 3}
+  emerald: {fileID: 9058318271021842438, guid: 8adfd247d0a73087fa5b49c77dc409fc, type: 3}
+  ruby: {fileID: 6112814727664158351, guid: bb5d99c3a3723239ca3c408c78b57cba, type: 3}
+--- !u!114 &5526553584182985123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5526553584182985124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96c05052d14ac0e2dbf1c98fee8f419d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5526553584182985120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5526553584182985124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b80e0b6b07fea88a7916131817d013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  obstacleOver: {fileID: 1433648830664792502, guid: 1768657e75b03091dbbc6cbca29d18d0, type: 3}
+  obstacleUnder: {fileID: 5308400565163241984, guid: 130404f4bdab2c3088852309d62a9bf5, type: 3}
+  bushObstacle: {fileID: 9026228810907797925, guid: 35be083b929597feb8f2c9495ebc9bca, type: 3}
+  stumpObstacle: {fileID: 6974320259631608308, guid: 40769fe3bf1535dbe901e04ac9492a4e, type: 3}
+  triggerCoordObstacle: 20

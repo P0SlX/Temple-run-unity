@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     private static readonly int Jump = Animator.StringToHash("jump");
     private static readonly int Roll = Animator.StringToHash("roll");
     private static readonly int Dead = Animator.StringToHash("dead");
+    private static readonly int Finish = Animator.StringToHash("finish");
     public float speed = 7.0f;
     public Vector3[] lanes;
     public int currentLane = 1;
@@ -21,11 +22,23 @@ public class PlayerMovement : MonoBehaviour
         _myAnimator = GetComponent<Animator>();
         _myRigidbody = GetComponent<Rigidbody>();
         _myCollider = GetComponent<CapsuleCollider>();
+        
+        // If Game is in infinite mode, increase speed with time
+        if (Difficulty.IsInfinit)
+        {
+            InvokeRepeating(nameof(IncreaseSpeed), 0, 1);
+        }
+        else
+        {
+            speed *= Difficulty.difficulty;
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (GameManager.IsGameOver || GameManager.IsFinished) return;
+
         _goesLeft = Input.GetKeyDown(KeyCode.A);
         _goesRight = Input.GetKeyDown(KeyCode.D);
         _jumps = Input.GetKeyDown(KeyCode.W);
@@ -44,10 +57,6 @@ public class PlayerMovement : MonoBehaviour
             // Make collider smaller when rolling
             _myCollider.height = 0.5f;
             _myCollider.center = new Vector3(0, 0.27f, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            _myAnimator.SetTrigger(Dead);
         }
         else if (_goesLeft)
         {
@@ -95,6 +104,18 @@ public class PlayerMovement : MonoBehaviour
             case "DiamondBlack":
                 GameManager.AddScore(-500, other.gameObject);
                 break;
+            case "FinishLine":
+                GameManager.IsFinished = true;
+                _myAnimator.SetTrigger(Finish);
+                break;
+            case "Obstacle":
+                if (GameManager.DodgeRemaining) GameManager.DodgeRemaining = false;
+                else
+                {
+                    _myAnimator.SetTrigger(Dead);
+                    GameManager.IsGameOver = true;
+                }
+                break;
         }
     }
 
@@ -102,5 +123,10 @@ public class PlayerMovement : MonoBehaviour
     {
         _myCollider.height = 1.897241f;
         _myCollider.center = new Vector3(6.792558e-17f, 0.9486203f, -0.02647015f);
+    }
+    
+    private void IncreaseSpeed()
+    {
+        speed += 0.05f;
     }
 }
