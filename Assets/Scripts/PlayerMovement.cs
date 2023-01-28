@@ -8,18 +8,19 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 7.0f;
     public Vector3[] lanes;
     public int currentLane = 1;
-    private bool _goesLeft, _goesRight, _jumps, _slides;
+    
+    private bool _goesLeft, _goesRight, _jumps, _roll;
     private bool _isGrounded = true;
-
-
     private Animator _myAnimator;
     private Rigidbody _myRigidbody;
+    private CapsuleCollider _myCollider;
 
     // Start is called before the first frame update
     private void Start()
     {
         _myAnimator = GetComponent<Animator>();
         _myRigidbody = GetComponent<Rigidbody>();
+        _myCollider = GetComponent<CapsuleCollider>();
     }
 
     // Update is called once per frame
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
         _goesLeft = Input.GetKeyDown(KeyCode.A);
         _goesRight = Input.GetKeyDown(KeyCode.D);
         _jumps = Input.GetKeyDown(KeyCode.W);
-        _slides = Input.GetKeyDown(KeyCode.S);
+        _roll = Input.GetKeyDown(KeyCode.S);
 
         if (_jumps && _isGrounded)
         {
@@ -36,10 +37,13 @@ public class PlayerMovement : MonoBehaviour
             _myAnimator.SetTrigger(Jump);
             _isGrounded = false;
         }
-        else if (_slides)
+        else if (_roll)
         {
             _myRigidbody.AddRelativeForce(Vector3.up * -6, ForceMode.Impulse);
             _myAnimator.SetTrigger(Roll);
+            // Make collider smaller when rolling
+            _myCollider.height = 0.5f;
+            _myCollider.center = new Vector3(0, 0.27f, 0);
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
@@ -77,20 +81,26 @@ public class PlayerMovement : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Coin":
-                GameManager.Score += 50;
+                GameManager.AddScore(50, other.gameObject);
                 break;
             case "Emerald":
-                GameManager.Score += 100;
+                GameManager.AddScore(100, other.gameObject);
                 break;
             case "Ruby":
-                GameManager.Score += 200;
+                GameManager.AddScore(200, other.gameObject);
                 break;
             case "Diamond":
-                GameManager.Score += 500;
+                GameManager.AddScore(500, other.gameObject);
                 break;
             case "DiamondBlack":
-                GameManager.Score -= 500;
+                GameManager.AddScore(-500, other.gameObject);
                 break;
         }
+    }
+
+    private void ResetCollider()
+    {
+        _myCollider.height = 1.897241f;
+        _myCollider.center = new Vector3(6.792558e-17f, 0.9486203f, -0.02647015f);
     }
 }

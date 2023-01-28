@@ -18,4 +18,10 @@ public class GameManager : MonoBehaviour
     {
         
     }
+    
+    public static void AddScore(int score, GameObject collectible)
+    {
+        Score += score;
+        collectible.SetActive(false);
+    }
 }

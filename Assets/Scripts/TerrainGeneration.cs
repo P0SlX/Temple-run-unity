@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TerrainGeneration : MonoBehaviour
@@ -14,12 +15,12 @@ public class TerrainGeneration : MonoBehaviour
     private GameObject terrain;
     private List<GameObject> terrains;
     private int triggerCoordTerrain = 50;
-    private int lastTerrainCoord = 200;
+    private int lastTerrainCoord = -50;
 
     private GameObject decor;
     private List<GameObject> decors;
     private int triggerCoordDecor = 60;
-    private int lastDecorCoord = 240;
+    private int lastDecorCoord = -60;
     private Quaternion decorRotationLeft = Quaternion.Euler(0, 180, 0);
     private Quaternion decorRotationRight = Quaternion.identity;
 
@@ -29,38 +30,31 @@ public class TerrainGeneration : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        collectibles = new List<List<GameObject>>();
         terrain = Resources.Load("Terrain") as GameObject;
-        terrains = new List<GameObject>()
+        terrains = new List<GameObject>();
+        
+        for (var i = 0; i < 5; i++)
         {
-            Instantiate(terrain, new Vector3(0, 0.27f, 0), Quaternion.identity),
-            Instantiate(terrain, new Vector3(50, 0.27f, 0), Quaternion.identity),
-            Instantiate(terrain, new Vector3(100, 0.27f, 0), Quaternion.identity),
-            Instantiate(terrain, new Vector3(150, 0.27f, 0), Quaternion.identity),
-            Instantiate(terrain, new Vector3(200, 0.27f, 0), Quaternion.identity),
-        };
+            AddTerrain();
+            lastTerrainCoord += 50;
+        }
 
         decor = Resources.Load("Decor") as GameObject;
-        decors = new List<GameObject>()
-        {
-            Instantiate(decor, new Vector3(0, 0, 19.5f), decorRotationLeft),
-            Instantiate(decor, new Vector3(0, 0, -19.5f), decorRotationRight),
-            Instantiate(decor, new Vector3(60, 0, 19.5f), decorRotationLeft),
-            Instantiate(decor, new Vector3(60, 0, -19.5f), decorRotationRight),
-            Instantiate(decor, new Vector3(120, 0, 19.5f), decorRotationLeft),
-            Instantiate(decor, new Vector3(120, 0, -19.5f), decorRotationRight),
-            Instantiate(decor, new Vector3(180, 0, 19.5f), decorRotationLeft),
-            Instantiate(decor, new Vector3(240, 0, -19.5f), decorRotationRight),
-            Instantiate(decor, new Vector3(240, 0, 19.5f), decorRotationLeft),
-            Instantiate(decor, new Vector3(180, 0, -19.5f), decorRotationRight),
-        };
+        decors = new List<GameObject>();
         
-        collectibles = new List<List<GameObject>>();
+        for (var i = 0; i < 5; i++)
+        {
+            decors.Add(Instantiate(decor, new Vector3(lastDecorCoord + 60, 0, 19.5f), decorRotationLeft));
+            decors.Add(Instantiate(decor, new Vector3(lastDecorCoord + 60, 0, -19.5f), decorRotationRight));
+            lastDecorCoord += 60;
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        var playerX = (int)player.transform.position.x;
+        var playerX = player.transform.position.x;
 
         // Generate a new terrain if the player is near the end of the current one
         if (playerX >= triggerCoordTerrain)
@@ -82,8 +76,8 @@ public class TerrainGeneration : MonoBehaviour
         
         // Remove collectibles that are behind the player
         if (collectibles.Count <= 0) return;
-        if (!(playerX >= collectibles[0][0].transform.position.x + 50)) return;
-        foreach (var collectible in collectibles[0])
+        if (!(playerX >= collectibles.First().First().transform.position.x + 50)) return;
+        foreach (var collectible in collectibles.First())
         {
             Destroy(collectible);
         }
@@ -103,20 +97,20 @@ public class TerrainGeneration : MonoBehaviour
             // 50% d'avoir 1 rangée ...
             case < 1:
                 // 3 rangées de pièces
-                GenerateCollectibles(3, lastTerrainCoord + 50, terrainInstance);
+                GenerateCollectibles(3, lastTerrainCoord + 50);
                 break;
             case < 3:
                 // 2 rangées de pièces
-                GenerateCollectibles(2, lastTerrainCoord + 50, terrainInstance);
+                GenerateCollectibles(2, lastTerrainCoord + 50);
                 break;
             default:
                 // 1 rangée de pièces
-                GenerateCollectibles(1, lastTerrainCoord + 50, terrainInstance);
+                GenerateCollectibles(1, lastTerrainCoord + 50);
                 break;
         }
     }
 
-    private void GenerateCollectibles(int nbRows, int x, GameObject terrainInstance)
+    private void GenerateCollectibles(int nbRows, int x)
     {
         // 80% d'avoir une pièce
         // 14% d'avoir une émeraude

@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 209911347}
   - component: {fileID: 209911348}
   - component: {fileID: 209911349}
+  - component: {fileID: 209911350}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -186,6 +187,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96c05052d14ac0e2dbf1c98fee8f419d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &209911350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209911346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b80e0b6b07fea88a7916131817d013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 728559011}
+  obstacleOver: {fileID: 1433648830664792502, guid: 1768657e75b03091dbbc6cbca29d18d0, type: 3}
+  obstacleUnder: {fileID: 5308400565163241984, guid: 130404f4bdab2c3088852309d62a9bf5, type: 3}
+  obstacleOneWay: {fileID: 0}
+  obstacleTwoWay: {fileID: 0}
+  triggerCoordObstacle: 20
 --- !u!1 &280254190
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +363,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4540229000190281644, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       propertyPath: m_Controller
       value: 
@@ -404,10 +427,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.41512465
+  m_Height: 1.8972406
   m_Direction: 1
-  m_Center: {x: -0, y: 1, z: 0}
+  m_Center: {x: 6.7925584e-17, y: 0.9486203, z: -0.026470155}
 --- !u!1 &777972911
 GameObject:
   m_ObjectHideFlags: 0
