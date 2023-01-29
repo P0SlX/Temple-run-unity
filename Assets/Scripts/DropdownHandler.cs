@@ -4,33 +4,38 @@ using UnityEngine.UI;
 
 public class DropdownHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        // Create the dropdown menu
         var dropdown = transform.GetComponent<Dropdown>();
         
+        // Clear before adding options
         dropdown.options.Clear();
 
-        List<string> options = new List<string>()
+        // List all options
+        var options = new List<string>()
         {
             "WASD",
             "ZQSD",
             "Flèches directionnelles"
         };
         
+        // Add options to the dropdown
         foreach (var option in options)
         {
             dropdown.options.Add(new Dropdown.OptionData() {text = option});
         }
         
+        // Set the default value
         DropdownValueChanged(dropdown);
         
+        // Add listener for when the value of the Dropdown changes, to take action
         dropdown.onValueChanged.AddListener(delegate { DropdownValueChanged(dropdown); });
     }
 
-    
-    void DropdownValueChanged(Dropdown dropdown)
+    private void DropdownValueChanged(Dropdown dropdown)
     {
+        // Get the selected option
         var option = dropdown.options[dropdown.value].text;
 
         // Write keybindings in PlayerPrefs
@@ -55,5 +60,8 @@ public class DropdownHandler : MonoBehaviour
                 PlayerPrefs.SetString("right", "right");
                 break;
         }
+        
+        // Save the changes
+        PlayerPrefs.Save();
     }
 }

@@ -1,42 +1,43 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Difficulty : MonoBehaviour
+public class DifficultyHandler : MonoBehaviour
 {
     [SerializeField] public GameObject difficultyPanel;
-    public static int difficulty = 1;
+    public static int Difficulty = 1;
     public static bool IsInfinit;
 
     public void SetEasyMode()
     {
-        difficulty = 1;
+        Difficulty = 1;
         IsInfinit = false;
         StartGame();
     }
 
     public void SetMediumMode()
     {
-        difficulty = 2;
+        Difficulty = 2;
         IsInfinit = false;
         StartGame();
     }
 
     public void SetHardMode()
     {
-        difficulty = 3;
+        Difficulty = 3;
         IsInfinit = false;
         StartGame();
     }
     
     public void SetHardCoreMode()
     {
-        difficulty = 3;
+        Difficulty = 3;
         StartGame();
     }
     
     public void SetInfinitMode()
     {
-        difficultyPanel.SetActive(false);
+        IsInfinit = true;
+        StartGame();
     }
 
     public void StartGame()

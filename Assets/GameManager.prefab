@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5526553584182985125}
   - component: {fileID: 5526553584182985122}
-  - component: {fileID: 5526553584182985123}
   - component: {fileID: 5526553584182985120}
   m_Layer: 0
   m_Name: GameManager
@@ -52,18 +51,7 @@ MonoBehaviour:
   diamondBlack: {fileID: 930337185009880107, guid: a1e2a401a94442de2a7c64b255dab3b5, type: 3}
   emerald: {fileID: 9058318271021842438, guid: 8adfd247d0a73087fa5b49c77dc409fc, type: 3}
   ruby: {fileID: 6112814727664158351, guid: bb5d99c3a3723239ca3c408c78b57cba, type: 3}
---- !u!114 &5526553584182985123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5526553584182985124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96c05052d14ac0e2dbf1c98fee8f419d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  finishLine: {fileID: 0}
 --- !u!114 &5526553584182985120
 MonoBehaviour:
   m_ObjectHideFlags: 0
