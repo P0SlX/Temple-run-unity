@@ -39,10 +39,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (GameManager.IsGameOver || GameManager.IsFinished) return;
 
-        _goesLeft = Input.GetKeyDown(KeyCode.A);
-        _goesRight = Input.GetKeyDown(KeyCode.D);
-        _jumps = Input.GetKeyDown(KeyCode.W);
-        _roll = Input.GetKeyDown(KeyCode.S);
+        // Read input from keyboard with PlayerPrefs
+        _goesLeft = Input.GetKeyDown(PlayerPrefs.GetString("left"));
+        _goesRight = Input.GetKeyDown(PlayerPrefs.GetString("right"));
+        _jumps = Input.GetKeyDown(PlayerPrefs.GetString("jump"));
+        _roll = Input.GetKeyDown(PlayerPrefs.GetString("roll"));
 
         if (_jumps && _isGrounded)
         {
